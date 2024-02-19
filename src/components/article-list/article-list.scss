@@ -1,0 +1,33 @@
+$blue: #1890FF;
+$white: #FFFFFF;
+
+.ant-pagination-item-active {
+    border: none !important;
+    background-color: $blue !important;
+}
+
+.ant-pagination-item-active a {
+    color: $white !important;
+}
+
+.article-list {
+    margin-left: auto;
+    margin-right: auto;
+    width: 938px;
+    &__pagination {
+        margin-left: 40%;
+        margin-right: auto;
+        width: auto;
+        margin-top: 26px;
+    }
+    &__little {
+        height: 150px;
+        list-style-type: none;
+    }
+}
+
+.spinner {
+    margin-top: 50px;
+    margin-left: 45%;
+    margin-right: auto;
+}
