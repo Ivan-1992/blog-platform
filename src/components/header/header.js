@@ -1,24 +1,20 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-import './header.scss'
+import HeaderNoAuth from './headerNoAuth'
+import HeaderAuth from './headerAuth'
+import styles from './header.module.scss'
 
 const Header = () => {
+  const auth = useSelector((state) => state.register.isAuth)
+
   return (
-    <header className="header">
-      <Link to="/articles" className="header__text">
+    <header className={styles.header}>
+      <Link to="/articles" className={styles.header__text}>
         RealWorld Blog
       </Link>
-      <div className="header__sign-group">
-        <Link to="/sign-in" className="header__sign-group_in">
-          Sign In
-        </Link>
-        <button className="header__sign-group_button-up">
-          <Link to="/sign-up" className="header__sign-group_button-up_link">
-            Sign Up
-          </Link>
-        </button>
-      </div>
+      {auth || sessionStorage.length > 0 ? <HeaderAuth /> : <HeaderNoAuth />}
     </header>
   )
 }

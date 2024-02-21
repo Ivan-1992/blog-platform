@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+$borderColor: #D9D9D9;
+$fontColorBlack: #262626;
+$placeholderFontColor: #BFBFBF;
+$greyFooterFontColor: #8C8C8C;
+$blue: #1890FF;
+$white: #FFFFFF;
+$red: #F5222D;
+
+.signIn {
+    font-family: 'Roboto', sans-serif;
+    width: 384px;
+    height: 374px;
+    border: 1px solid $borderColor;
+    border-radius: 6px;
+    box-shadow: 0px 22px 106px 0px #00000012;
+    background-color: $white;
+    margin-top: 59px;
+    margin-left: 35%;
+    margin-right: auto;
+    &__form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        &_header {
+            margin-top: 35px;
+            margin-bottom: 4px;
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 28px;
+            letter-spacing: 0em;
+        }
+        &_label {
+            color: $fontColorBlack;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 22px;
+            letter-spacing: 0em;
+            text-align: left;
+            margin-left: 32px;
+            margin-right: auto;
+            margin-top: 12px;
+        }
+        &_input {
+            width: 303px;
+            height: 40px;
+            border: 1px solid $placeholderFontColor;
+            border-radius: 4px;
+            color: $fontColorBlack;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+            letter-spacing: 0em;
+            text-align: left;
+            padding-left: 12px;
+            &::placeholder {
+                color: $placeholderFontColor;
+            }
+        }
+        &_button {
+            width: 319px;
+            height: 40px;
+            background-color: $blue;
+            color: $white;
+            border: none;
+            border-radius: 4px;
+            margin-top: 21px;
+            margin-bottom: 8px;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+            letter-spacing: 0em;
+            cursor: pointer;
+            &:disabled {
+                opacity: 0.5;
+            }
+        }
+        &_footer {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 20px;
+        letter-spacing: 0em;
+        color: $greyFooterFontColor;
+            &_link {
+                font-size: 12px;
+                font-weight: 400;
+                line-height: 20px;
+                letter-spacing: 0em;
+                color: $blue;
+                text-decoration: none;
+                margin-left: 5px;
+            }
+        }
+    }
+    &__error {
+        color: $red;
+        margin: 0;
+        width: 320px;
+        & p {
+            margin: 0;
+            margin-top: 5px;
+        }
+    }
+}

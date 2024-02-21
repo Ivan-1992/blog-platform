@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import Markdown from 'react-markdown'
 import { useSelector } from 'react-redux'
 
-import Spinner from '../spinner'
-import ErrorIndicator from '../error-indicator'
+import Spinner from '../../components/spinner'
+import ErrorIndicator from '../../components/error-indicator'
 import heart from '../../assets/heart.svg'
 
 import styles from './article.module.scss'

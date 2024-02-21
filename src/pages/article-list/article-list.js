@@ -5,9 +5,9 @@ import { Pagination } from 'antd'
 
 import './article-list.scss'
 // import Article from '../article'
-import ArticlePreview from '../article-preview'
-import Spinner from '../spinner'
-import ErrorIndicator from '../error-indicator'
+import ArticlePreview from '../../components/article-preview'
+import Spinner from '../../components/spinner'
+import ErrorIndicator from '../../components/error-indicator'
 import { fetchData } from '../../services/fetchData'
 
 const ArticleList = () => {
