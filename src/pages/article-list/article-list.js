@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Pagination } from 'antd'
-// import { Routes, Route, Link } from 'react-router-dom'
 
 import './article-list.scss'
-// import Article from '../article'
 import ArticlePreview from '../../components/article-preview'
 import Spinner from '../../components/spinner'
 import ErrorIndicator from '../../components/error-indicator'

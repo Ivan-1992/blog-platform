@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const authorization = sessionStorage.length > 0
 const userSlice = createSlice({
   name: 'user',
   initialState: {
     user: [],
     error: null,
-    isAuth: false,
+    isAuth: authorization,
   },
   reducers: {
     registerUser(state, action) {

@@ -46,6 +46,28 @@ const articleSlice = createSlice({
     editArticleFail(state, action) {
       state.error = action.payload
     },
+    estimateArticle(state, action) {
+      state.article.pop({
+        article: action.payload.article,
+      })
+      state.article.push({
+        article: action.payload.article,
+      })
+    },
+    estimateArticleFail(state, action) {
+      state.error = action.payload
+    },
+    cancelFavoriteArticle(state, action) {
+      state.article.pop({
+        article: action.payload.article,
+      })
+      state.article.push({
+        article: action.payload.article,
+      })
+    },
+    cancelFavoriteArticleFail(state, action) {
+      state.error = action.payload
+    },
   },
 })
 
@@ -57,5 +79,9 @@ export const {
   deleteArticleFail,
   editArticle,
   editArticleFail,
+  estimateArticle,
+  estimateArticleFail,
+  cancelFavoriteArticle,
+  cancelFavoriteArticleFail,
 } = articleSlice.actions
 export default articleSlice.reducer

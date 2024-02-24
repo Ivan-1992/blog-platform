@@ -1,20 +1,21 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 
-import { fetchArticle } from '../../services/fetchData'
+import { fetchArticle, fetchData, toFavoriteArticle, unfavoriteArticle } from '../../services/fetchData'
 import heart from '../../assets/heart.svg'
+import fullHeart from '../../assets/fullHeart.svg'
 
 import styles from './article-preview.module.scss'
 
 const ArticlePreview = ({ article }) => {
   const dispatch = useDispatch()
-  // const { id } = useParams()
-  const { author, slug, createdAt, description, favoritesCount, tagList, title } = article
-  // favorited, updatedAt
+  const navigate = useNavigate()
+
+  const { author, slug, createdAt, description, favoritesCount, tagList, title, favorited } = article
   const { image, username } = author
-  // following
+
   const toFormatDate = (date) => {
     return date.split('T')[0].split('-').join(', ').trim()
   }
@@ -25,6 +26,16 @@ const ArticlePreview = ({ article }) => {
 
   const onClick = () => {
     dispatch(fetchArticle(slug))
+  }
+
+  const favorites = favorited ? fullHeart : heart
+
+  const onLike = async () => {
+    if (sessionStorage.length == 0) navigate('/sign-in')
+    sessionStorage.length > 0 && !favorited
+      ? await dispatch(toFavoriteArticle(slug))
+      : await dispatch(unfavoriteArticle(slug))
+    await dispatch(fetchData())
   }
 
   return (
@@ -39,8 +50,8 @@ const ArticlePreview = ({ article }) => {
           </li>
         ))}
       </ul>
-      <button className={styles.article__like}>
-        <img src={heart} alt="" className={styles.article__like_image} /> {favoritesCount}
+      <button className={styles.article__like} onClick={onLike}>
+        <img src={favorites} alt="" className={styles.article__like_image} /> {favoritesCount}
       </button>
       <div className={styles.article__short_description}>{description}</div>
       <h6 className={styles.article__user_name}>{username}</h6>

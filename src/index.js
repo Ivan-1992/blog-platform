@@ -5,7 +5,6 @@ import { BrowserRouter } from 'react-router-dom'
 
 // eslint-disable-next-line import/order
 import store from './redux/store'
-
 import './index.scss'
 
 import App from './components/app'

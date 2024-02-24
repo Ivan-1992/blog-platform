@@ -47,13 +47,6 @@ const CreateArticle = () => {
       navigate('/articles')
     }
   }
-  //   useEffect(() => {
-  //     if (!isSlug.slug && !error) {
-  //       navigate('/articles')
-  //     } else if (isSlug.slug && !error) {
-  //       navigate('/articles')
-  //     }
-  //   })
 
   const isParams = isSlug.slug ? (
     <h4 className={styles.create__form_header}>Edit article</h4>

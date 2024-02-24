@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import Markdown from 'react-markdown'
 import { format } from 'date-fns'
 import { useSelector, useDispatch } from 'react-redux'
@@ -8,17 +8,25 @@ import { Button, message, Popconfirm } from 'antd'
 import Spinner from '../../components/spinner'
 import ErrorIndicator from '../../components/error-indicator'
 import heart from '../../assets/heart.svg'
-import { deleteArticle } from '../../services/fetchData'
+import fullHeart from '../../assets/fullHeart.svg'
+import { deleteArticle, fetchArticle, fetchData, toFavoriteArticle, unfavoriteArticle } from '../../services/fetchData'
 
 import styles from './article.module.scss'
 
 const Article = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const isSlug = useParams()
   const article = useSelector((state) => state.article.article[0]?.article)
   const isLoading = useSelector((state) => state.article.loading)
   const isError = useSelector((state) => state.article.error)
 
+  useEffect(() => {
+    const fetchArticleData = async () => {
+      dispatch(fetchArticle(isSlug.slug))
+    }
+    fetchArticleData()
+  }, [])
   if (isLoading) {
     return (
       <div className={styles.spinner}>
@@ -35,10 +43,8 @@ const Article = () => {
     )
   }
 
-  const { author, body, slug, createdAt, description, favoritesCount, tagList, title } = article
-  // favorited, updatedAt
+  const { author, body, slug, favorited, createdAt, description, favoritesCount, tagList, title } = article
   const { image, username } = author
-  // following
 
   const toFormatDate = (date) => {
     return date.split('T')[0].split('-').join(', ').trim()
@@ -52,9 +58,17 @@ const Article = () => {
     dispatch(deleteArticle(slug))
     message.success('Deleted!')
     navigate('/articles')
+    dispatch(fetchData())
   }
   const cancel = () => {
     message.error('Cancelled')
+  }
+
+  const favorites = favorited ? fullHeart : heart
+
+  const onLike = () => {
+    if (sessionStorage.length == 0) navigate('/sign-in')
+    sessionStorage.length > 0 && !favorited ? dispatch(toFavoriteArticle(slug)) : dispatch(unfavoriteArticle(slug))
   }
 
   const session = sessionStorage.length > 0 ? JSON.parse(sessionStorage.user) : null
@@ -72,8 +86,8 @@ const Article = () => {
             </li>
           ))}
         </ul>
-        <button className={styles.article__like}>
-          <img src={heart} alt="" className={styles.article__like_image} /> {favoritesCount}
+        <button className={styles.article__like} onClick={onLike}>
+          <img src={favorites} alt="" className={styles.article__like_image} /> {favoritesCount}
         </button>
         <div className={styles.article__short_description}>{description}</div>
         <h6 className={styles.article__user_name}>{username}</h6>

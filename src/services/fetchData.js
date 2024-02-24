@@ -7,6 +7,10 @@ import {
   deleteArticleFail,
   editArticle,
   editArticleFail,
+  estimateArticle,
+  estimateArticleFail,
+  cancelFavoriteArticle,
+  cancelFavoriteArticleFail,
 } from '../redux/slices/article-slice'
 import {
   registerUser,
@@ -19,9 +23,21 @@ import {
 const baseUrl = 'https://blog.kata.academy/api/'
 
 export const fetchData = (offset) => {
+  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
+
   return async (dispatch) => {
     const params = new URLSearchParams({ limit: '5', offset: offset })
-    const articlesResponse = await fetch(`${baseUrl}articles?${params}`)
+    const headers = {}
+
+    if (token && token.token) {
+      headers.Authorization = `Token ${token.token}`
+    }
+
+    const articlesResponse = await fetch(`${baseUrl}articles?${params}`, {
+      method: 'GET',
+      headers,
+    })
+
     if (!articlesResponse.ok) {
       dispatch(fetchArticlesFail(articlesResponse.status))
     }
@@ -34,8 +50,19 @@ export const fetchData = (offset) => {
 }
 
 export const fetchArticle = (slug) => {
+  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
   return async (dispatch) => {
-    const articleResponse = await fetch(`${baseUrl}articles/${slug}`)
+    const headers = {}
+
+    if (token && token.token) {
+      headers.Authorization = `Token ${token.token}`
+    }
+
+    const articleResponse = await fetch(`${baseUrl}articles/${slug}`, {
+      method: 'GET',
+      headers,
+    })
+
     if (!articleResponse.ok) {
       dispatch(fetchOneArticleFail(articleResponse.status))
       return
@@ -103,7 +130,7 @@ export const toLoginUser = (data) => {
 }
 
 export const updateUserProfile = (data) => {
-  const token = JSON.parse(sessionStorage.user)
+  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
   return async (dispatch) => {
     const updateResponse = await fetch(`${baseUrl}user`, {
       method: 'PUT',
@@ -133,7 +160,7 @@ export const updateUserProfile = (data) => {
 }
 
 export const createArticle = (data) => {
-  const token = JSON.parse(sessionStorage.user)
+  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
   return async (dispatch) => {
     const createArticleResponse = await fetch(`${baseUrl}articles`, {
       method: 'POST',
@@ -164,7 +191,7 @@ export const createArticle = (data) => {
 }
 
 export const deleteArticle = (slug) => {
-  const token = JSON.parse(sessionStorage.user)
+  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
   return async (dispatch) => {
     const deleteArticleResponse = await fetch(`${baseUrl}articles/${slug}`, {
       method: 'DELETE',
@@ -176,18 +203,11 @@ export const deleteArticle = (slug) => {
     if (!deleteArticleResponse.ok) {
       dispatch(deleteArticleFail(deleteArticleResponse.status))
     }
-    // else {
-    //   const articleData = await deleteArticleResponse.json()
-
-    //   if (articleData) {
-    //     dispatch(createNewArticle(articleData))
-    //   }
-    // }
   }
 }
 
 export const updateArticle = (data, slug) => {
-  const token = JSON.parse(sessionStorage.user)
+  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
   return async (dispatch) => {
     const updateArticleResponse = await fetch(`${baseUrl}articles/${slug}`, {
       method: 'PUT',
@@ -212,6 +232,50 @@ export const updateArticle = (data, slug) => {
 
       if (articleData) {
         dispatch(editArticle(articleData))
+      }
+    }
+  }
+}
+
+export const toFavoriteArticle = (slug) => {
+  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
+  return async (dispatch) => {
+    const toFavoriteResponse = await fetch(`${baseUrl}articles/${slug}/favorite`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Token ${token.token}`,
+      },
+    })
+
+    if (!toFavoriteResponse.ok) {
+      dispatch(estimateArticleFail(toFavoriteResponse.status))
+    } else {
+      const favoriteData = await toFavoriteResponse.json()
+
+      if (favoriteData) {
+        dispatch(estimateArticle(favoriteData))
+      }
+    }
+  }
+}
+
+export const unfavoriteArticle = (slug) => {
+  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
+  return async (dispatch) => {
+    const unfavoriteResponse = await fetch(`${baseUrl}articles/${slug}/favorite`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Token ${token.token}`,
+      },
+    })
+
+    if (!unfavoriteResponse.ok) {
+      dispatch(cancelFavoriteArticleFail(unfavoriteResponse.status))
+    } else {
+      const unfavoriteData = await unfavoriteResponse.json()
+
+      if (unfavoriteData) {
+        dispatch(cancelFavoriteArticle(unfavoriteData))
       }
     }
   }
