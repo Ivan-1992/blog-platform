@@ -1,24 +1,23 @@
 import React, { useEffect } from 'react'
-// import { Link } from 'react-router-dom'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
+import { message } from 'antd'
 
 import { registrationUser } from '../../services/fetchData'
 import ErrorIndicator from '../../components/error-indicator'
 
-import 'react-toastify/dist/ReactToastify.css'
 import styles from './sign-up.module.scss'
 
 const SignUp = () => {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const error = useSelector((state) => state.register.error)
   const data = useSelector((state) => state.register.user)
-
+  const navigate = useNavigate()
   useEffect(() => {
     if (!error && data.length > 0) {
       navigate('/articles')
+      message.success('Registration successful!')
     }
   })
 

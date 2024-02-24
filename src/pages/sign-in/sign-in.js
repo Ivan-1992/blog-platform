@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
+import { message } from 'antd'
 
 import { toLoginUser } from '../../services/fetchData'
 import ErrorIndicator from '../../components/error-indicator'
@@ -11,12 +12,15 @@ import styles from './sign-in.module.scss'
 const SignIn = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const error = useSelector((state) => state.register.error)
   const data = useSelector((state) => state.register.user)
+  const fromPage = location.state?.from?.pathname || '/'
 
   useEffect(() => {
     if (!error && data.length > 0) {
-      navigate('/articles')
+      navigate(fromPage)
+      message.success('Welcome to RealWorld Blog!')
     }
   })
 

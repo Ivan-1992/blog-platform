@@ -3,16 +3,11 @@ $borderShadow: #00000026;
 $blue: #1890FF;
 $grey: #00000080;
 $greyTextColor: #000000BF;
-
-$white: #FFFFFF;
-$borderShadow: #00000026;
-$blue: #1890FF;
-$grey: #00000080;
-$greyTextColor: #000000BF;
+$green: #52C41A;
 
 .article {
     display: grid;
-    grid-template-columns: 180px 40px auto 120px 50px;
+    grid-template-columns: 180px 40px auto 120px 65px;
     grid-template-rows: 28px 20px 50px auto;
     gap: 7px;
     border-radius: 5px;
@@ -95,6 +90,7 @@ $greyTextColor: #000000BF;
         grid-column-start: 5;
         grid-row-start: 1;
         margin-top: 5px;
+        margin-left: 10px;
     }
     &__body {
         grid-column: 1/4;
@@ -117,10 +113,30 @@ $greyTextColor: #000000BF;
             margin-right: 5px;
         }
     }
+    &__edit {
+        grid-column-start: 5;
+        grid-row-start: 3;
+        width: 66px;
+        height: 31px;
+        border: 1px solid $green;
+        border-radius: 4px;
+        color: $green;
+        background-color: $white;
+        &_link {
+            color: $green;
+            text-decoration: none;
+        }
+    }
 }
 
 .spinner {
     margin-top: 50px;
     margin-left: 45%;
     margin-right: auto;
+}
+
+.danger_btn {
+    justify-self: end;
+    grid-column-start: 4 !important;
+    grid-row-start: 3 !important;
 }

@@ -20,8 +20,42 @@ const articleSlice = createSlice({
     fetchOneArticleFail(state, action) {
       state.error = action.payload
     },
+    createNewArticle(state, action) {
+      state.loading = false
+      state.article.pop({
+        article: action.payload.article,
+      })
+      state.article.push({
+        article: action.payload.article,
+      })
+    },
+    createNewArticleFail(state, action) {
+      state.error = action.payload
+    },
+    deleteArticleFail(state, action) {
+      state.error = action.payload
+    },
+    editArticle(state, action) {
+      state.article.pop({
+        article: action.payload.article,
+      })
+      state.article.push({
+        article: action.payload.article,
+      })
+    },
+    editArticleFail(state, action) {
+      state.error = action.payload
+    },
   },
 })
 
-export const { fetchOneArticle, fetchOneArticleFail } = articleSlice.actions
+export const {
+  fetchOneArticle,
+  fetchOneArticleFail,
+  createNewArticle,
+  createNewArticleFail,
+  deleteArticleFail,
+  editArticle,
+  editArticleFail,
+} = articleSlice.actions
 export default articleSlice.reducer

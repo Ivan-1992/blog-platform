@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { message } from 'antd'
 
 import { updateUserProfile } from '../../services/fetchData'
 import ErrorIndicator from '../../components/error-indicator'
@@ -18,18 +18,11 @@ const EditProfile = () => {
   })
 
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const error = useSelector((state) => state.register.error)
-  const data = useSelector((state) => state.register.user)
-
-  useEffect(() => {
-    if (!error && data.length > 0) {
-      navigate('/articles')
-    }
-  })
 
   const onSubmit = (data) => {
     dispatch(updateUserProfile(data))
+    message.success('Profile data has been changed')
   }
 
   if (error) {

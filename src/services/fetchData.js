@@ -1,5 +1,13 @@
 import { fetchArticles, fetchArticlesFail } from '../redux/slices/article-list-slice'
-import { fetchOneArticle, fetchOneArticleFail } from '../redux/slices/article-slice'
+import {
+  fetchOneArticle,
+  fetchOneArticleFail,
+  createNewArticle,
+  createNewArticleFail,
+  deleteArticleFail,
+  editArticle,
+  editArticleFail,
+} from '../redux/slices/article-slice'
 import {
   registerUser,
   registerUserFail,
@@ -119,6 +127,91 @@ export const updateUserProfile = (data) => {
 
       if (updateData) {
         dispatch(editProfile(updateData))
+      }
+    }
+  }
+}
+
+export const createArticle = (data) => {
+  const token = JSON.parse(sessionStorage.user)
+  return async (dispatch) => {
+    const createArticleResponse = await fetch(`${baseUrl}articles`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Token ${token.token}`,
+      },
+      body: JSON.stringify({
+        article: {
+          title: data.title,
+          description: data.description,
+          body: data.body,
+          tagList: data.tags,
+        },
+      }),
+    })
+
+    if (!createArticleResponse.ok) {
+      dispatch(createNewArticleFail(createArticleResponse.status))
+    } else {
+      const articleData = await createArticleResponse.json()
+
+      if (articleData) {
+        dispatch(createNewArticle(articleData))
+      }
+    }
+  }
+}
+
+export const deleteArticle = (slug) => {
+  const token = JSON.parse(sessionStorage.user)
+  return async (dispatch) => {
+    const deleteArticleResponse = await fetch(`${baseUrl}articles/${slug}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Token ${token.token}`,
+      },
+    })
+
+    if (!deleteArticleResponse.ok) {
+      dispatch(deleteArticleFail(deleteArticleResponse.status))
+    }
+    // else {
+    //   const articleData = await deleteArticleResponse.json()
+
+    //   if (articleData) {
+    //     dispatch(createNewArticle(articleData))
+    //   }
+    // }
+  }
+}
+
+export const updateArticle = (data, slug) => {
+  const token = JSON.parse(sessionStorage.user)
+  return async (dispatch) => {
+    const updateArticleResponse = await fetch(`${baseUrl}articles/${slug}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Token ${token.token}`,
+      },
+      body: JSON.stringify({
+        article: {
+          title: data.title,
+          description: data.description,
+          body: data.body,
+          tagList: data.tags,
+        },
+      }),
+    })
+
+    if (!updateArticleResponse.ok) {
+      dispatch(editArticleFail(updateArticleResponse.status))
+    } else {
+      const articleData = await updateArticleResponse.json()
+
+      if (articleData) {
+        dispatch(editArticle(articleData))
       }
     }
   }
