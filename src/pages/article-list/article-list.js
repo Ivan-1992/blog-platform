@@ -2,11 +2,12 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Pagination } from 'antd'
 
-import './article-list.scss'
 import ArticlePreview from '../../components/article-preview'
 import Spinner from '../../components/spinner'
 import ErrorIndicator from '../../components/error-indicator'
 import { fetchData } from '../../services/fetchData'
+
+import styles from './article-list.module.scss'
 
 const ArticleList = () => {
   const dispatch = useDispatch()
@@ -27,7 +28,7 @@ const ArticleList = () => {
   }
   if (isLoading) {
     return (
-      <div className="spinner">
+      <div className={styles.spinner}>
         <Spinner />
       </div>
     )
@@ -42,17 +43,17 @@ const ArticleList = () => {
   }
 
   return (
-    <div className="article-list">
+    <div className={styles.article_list}>
       {articles && articles.articles && articles.articles.length > 0 && (
         <ul>
           {articles.articles.map((article) => (
-            <li className="article-list__little" key={article.slug}>
+            <li className={styles.article_list__little} key={article.slug}>
               <ArticlePreview article={article} />
             </li>
           ))}
         </ul>
       )}
-      <div className="article-list__pagination">
+      <div className={styles.article_list__pagination}>
         <Pagination defaultCurrent={1} total={totalPageCount} size="small" onChange={onPageSelected} />
       </div>
     </div>

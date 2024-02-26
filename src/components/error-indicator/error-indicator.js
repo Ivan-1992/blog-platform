@@ -1,7 +1,7 @@
 import React from 'react'
 import { Alert } from 'antd'
 
-import './error-indicator.scss'
+import styles from './error-indicator.module.scss'
 
 const ErrorIndicator = (err) => {
   const text = `Error! Code: ${err.error}`
@@ -11,9 +11,9 @@ const ErrorIndicator = (err) => {
   }
 
   return (
-    <div className="error-indicator">
+    <div className={styles.error_indicator}>
       <Alert message={text} type="error" />
-      <button className="error-indicator__reload-button" onClick={onReload}>
+      <button className={styles.error_indicator__reload_button} onClick={onReload}>
         Reload page
       </button>
     </div>
