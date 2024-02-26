@@ -1,8 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-import './app.scss'
-
 import Layout from '../layout'
 import ArticleList from '../../pages/article-list'
 import Article from '../../pages/article'
