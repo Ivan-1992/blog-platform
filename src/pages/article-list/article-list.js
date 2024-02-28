@@ -35,16 +35,12 @@ const ArticleList = () => {
   }
 
   if (isError) {
-    return (
-      <div>
-        <ErrorIndicator err={isError} />
-      </div>
-    )
+    return <ErrorIndicator err={isError} />
   }
 
   return (
     <div className={styles.article_list}>
-      {articles && articles.articles && articles.articles.length > 0 && (
+      {articles?.articles?.length > 0 && (
         <ul>
           {articles.articles.map((article) => (
             <li className={styles.article_list__little} key={article.slug}>
@@ -54,7 +50,13 @@ const ArticleList = () => {
         </ul>
       )}
       <div className={styles.article_list__pagination}>
-        <Pagination defaultCurrent={1} total={totalPageCount} size="small" onChange={onPageSelected} />
+        <Pagination
+          defaultCurrent={1}
+          showSizeChanger={false}
+          total={totalPageCount}
+          size="small"
+          onChange={onPageSelected}
+        />
       </div>
     </div>
   )

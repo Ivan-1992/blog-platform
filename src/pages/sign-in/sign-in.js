@@ -1,25 +1,23 @@
 import React, { useEffect } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { message } from 'antd'
 
+import { PATHS } from '../../components/app/app'
 import { toLoginUser } from '../../services/fetchData'
-import ErrorIndicator from '../../components/error-indicator'
 
 import styles from './sign-in.module.scss'
 
 const SignIn = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const location = useLocation()
-  const error = useSelector((state) => state.register.error)
+  const loginError = useSelector((state) => state.register.error)
   const data = useSelector((state) => state.register.user)
-  const fromPage = location.state?.from?.pathname || '/'
 
   useEffect(() => {
-    if (!error && data.length > 0) {
-      navigate(fromPage)
+    if (!loginError && data.length > 0) {
+      navigate(PATHS.ARTICLES)
       message.success('Welcome to RealWorld Blog!')
     }
   })
@@ -34,10 +32,6 @@ const SignIn = () => {
 
   const onSubmit = (data) => {
     dispatch(toLoginUser(data))
-  }
-
-  if (error) {
-    return <ErrorIndicator error={error} />
   }
 
   return (
@@ -63,6 +57,7 @@ const SignIn = () => {
         <label className={styles.signIn__form_label}>
           Password
           <input
+            type="password"
             placeholder="Password"
             className={styles.signIn__form_input}
             {...register('password', {
@@ -72,14 +67,17 @@ const SignIn = () => {
             })}
           />
         </label>
-        <div className={styles.signIn__error}>{errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}</div>
+        <div className={styles.signIn__error}>
+          {errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}
+          {loginError ? `Email or password ${loginError['email or password']}` : null}
+        </div>
 
         <button className={styles.signIn__form_button} disabled={!isValid}>
           Login
         </button>
         <div className={styles.signIn__form_footer}>
           Don&apos;t have an account?
-          <Link to="/sign-up" className={styles.signIn__form_footer_link}>
+          <Link to={PATHS.SIGN_UP} className={styles.signIn__form_footer_link}>
             Sign Up.
           </Link>
         </div>

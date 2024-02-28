@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { message } from 'antd'
 
 import { updateUserProfile } from '../../services/fetchData'
-import ErrorIndicator from '../../components/error-indicator'
 
 import styles from './edit-profile.module.scss'
 
@@ -18,15 +17,11 @@ const EditProfile = () => {
   })
 
   const dispatch = useDispatch()
-  const error = useSelector((state) => state.register.error)
+  const updateError = useSelector((state) => state.register.error)
 
   const onSubmit = (data) => {
     dispatch(updateUserProfile(data))
     message.success('Profile data has been changed')
-  }
-
-  if (error) {
-    return <ErrorIndicator error={error} />
   }
 
   return (
@@ -49,7 +44,10 @@ const EditProfile = () => {
             })}
           />
         </label>
-        <div className={styles.edit__error}>{errors?.userName && <p>{errors?.userName?.message || 'Error!'}</p>}</div>
+        <div className={styles.edit__error}>
+          {errors?.userName && <p>{errors?.userName?.message || 'Error!'}</p>}
+          {updateError?.username && <p>{`Username ${updateError.username}`}</p>}
+        </div>
 
         <label className={styles.edit__form_label}>
           Email address
@@ -65,11 +63,15 @@ const EditProfile = () => {
             })}
           />
         </label>
-        <div className={styles.edit__error}>{errors?.email && <p>{errors?.email?.message || 'Error!'}</p>}</div>
+        <div className={styles.edit__error}>
+          {errors?.email && <p>{errors?.email?.message || 'Error!'}</p>}
+          {updateError?.email && <p>{`Email ${updateError.email}`}</p>}
+        </div>
 
         <label className={styles.edit__form_label}>
           New Password
           <input
+            type="password"
             placeholder="Password"
             className={styles.edit__form_input}
             {...register('password', {

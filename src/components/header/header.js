@@ -2,6 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
+import { PATHS } from '../app/app'
+
 import HeaderNoAuth from './headerNoAuth'
 import HeaderAuth from './headerAuth'
 import styles from './header.module.scss'
@@ -11,10 +13,10 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      <Link to="/articles" className={styles.header__text}>
+      <Link to={PATHS.ARTICLES} className={styles.header__text}>
         RealWorld Blog
       </Link>
-      {auth || sessionStorage.length > 0 ? <HeaderAuth /> : <HeaderNoAuth />}
+      {auth || localStorage.length > 0 ? <HeaderAuth /> : <HeaderNoAuth />}
     </header>
   )
 }

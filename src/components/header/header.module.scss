@@ -86,6 +86,10 @@ $borderColor: #000000BF;
                 color: $black;
                 text-decoration: none;
             }
+            &__img {
+                width: 46px;
+                height: 46px;
+            }
         }
         &__log_out_button {
             width: 109px;

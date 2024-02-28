@@ -23,7 +23,7 @@ import {
 const baseUrl = 'https://blog.kata.academy/api/'
 
 export const fetchData = (offset) => {
-  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
+  const token = localStorage.user ? JSON.parse(localStorage.user) : ''
 
   return async (dispatch) => {
     const params = new URLSearchParams({ limit: '5', offset: offset })
@@ -50,7 +50,7 @@ export const fetchData = (offset) => {
 }
 
 export const fetchArticle = (slug) => {
-  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
+  const token = localStorage.user ? JSON.parse(localStorage.user) : ''
   return async (dispatch) => {
     const headers = {}
 
@@ -91,7 +91,8 @@ export const registrationUser = (data) => {
       }),
     })
     if (!registerResponse.ok) {
-      dispatch(registerUserFail(registerResponse.status))
+      const err = await registerResponse.json()
+      dispatch(registerUserFail(err.errors))
     } else {
       const registerData = await registerResponse.json()
 
@@ -118,7 +119,8 @@ export const toLoginUser = (data) => {
     })
 
     if (!loginResponse.ok) {
-      dispatch(loginUserFail(loginResponse.status))
+      const err = await loginResponse.json()
+      dispatch(loginUserFail(err.errors))
     } else {
       const loginData = await loginResponse.json()
 
@@ -130,7 +132,7 @@ export const toLoginUser = (data) => {
 }
 
 export const updateUserProfile = (data) => {
-  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
+  const token = localStorage.user ? JSON.parse(localStorage.user) : ''
   return async (dispatch) => {
     const updateResponse = await fetch(`${baseUrl}user`, {
       method: 'PUT',
@@ -148,7 +150,8 @@ export const updateUserProfile = (data) => {
       }),
     })
     if (!updateResponse.ok) {
-      dispatch(editProfileFail(updateResponse.status))
+      const err = await updateResponse.json()
+      dispatch(editProfileFail(err.errors))
     } else {
       const updateData = await updateResponse.json()
 
@@ -160,7 +163,7 @@ export const updateUserProfile = (data) => {
 }
 
 export const createArticle = (data) => {
-  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
+  const token = localStorage.user ? JSON.parse(localStorage.user) : ''
   return async (dispatch) => {
     const createArticleResponse = await fetch(`${baseUrl}articles`, {
       method: 'POST',
@@ -191,7 +194,7 @@ export const createArticle = (data) => {
 }
 
 export const deleteArticle = (slug) => {
-  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
+  const token = localStorage.user ? JSON.parse(localStorage.user) : ''
   return async (dispatch) => {
     const deleteArticleResponse = await fetch(`${baseUrl}articles/${slug}`, {
       method: 'DELETE',
@@ -207,7 +210,7 @@ export const deleteArticle = (slug) => {
 }
 
 export const updateArticle = (data, slug) => {
-  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
+  const token = localStorage.user ? JSON.parse(localStorage.user) : ''
   return async (dispatch) => {
     const updateArticleResponse = await fetch(`${baseUrl}articles/${slug}`, {
       method: 'PUT',
@@ -238,7 +241,7 @@ export const updateArticle = (data, slug) => {
 }
 
 export const toFavoriteArticle = (slug) => {
-  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
+  const token = localStorage.user ? JSON.parse(localStorage.user) : ''
   return async (dispatch) => {
     const toFavoriteResponse = await fetch(`${baseUrl}articles/${slug}/favorite`, {
       method: 'POST',
@@ -260,7 +263,7 @@ export const toFavoriteArticle = (slug) => {
 }
 
 export const unfavoriteArticle = (slug) => {
-  const token = sessionStorage.user ? JSON.parse(sessionStorage.user) : ''
+  const token = localStorage.user ? JSON.parse(localStorage.user) : ''
   return async (dispatch) => {
     const unfavoriteResponse = await fetch(`${baseUrl}articles/${slug}/favorite`, {
       method: 'DELETE',

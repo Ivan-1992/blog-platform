@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const authorization = sessionStorage.length > 0
+const authorization = localStorage.length > 0
 const userSlice = createSlice({
   name: 'user',
   initialState: {
@@ -13,6 +13,7 @@ const userSlice = createSlice({
       state.user.push({
         user: action.payload.user,
       })
+      state.error = null
     },
     registerUserFail(state, action) {
       state.error = action.payload
@@ -22,7 +23,8 @@ const userSlice = createSlice({
         user: action.payload.user,
       })
       state.isAuth = true
-      sessionStorage.setItem('user', JSON.stringify(action.payload.user))
+      localStorage.setItem('user', JSON.stringify(action.payload.user))
+      state.error = null
     },
     loginUserFail(state, action) {
       state.error = action.payload
@@ -30,13 +32,13 @@ const userSlice = createSlice({
     logOutUser(state) {
       state.user = []
       state.isAuth = false
-      sessionStorage.clear()
+      localStorage.clear()
     },
     editProfile(state, action) {
       state.user.push({
         user: action.payload.user,
       })
-      sessionStorage.setItem('user', JSON.stringify(action.payload.user))
+      localStorage.setItem('user', JSON.stringify(action.payload.user))
     },
     editProfileFail(state, action) {
       state.error = action.payload

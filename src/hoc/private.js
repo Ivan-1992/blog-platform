@@ -2,7 +2,7 @@ import { useLocation, Navigate } from 'react-router-dom'
 
 const Private = ({ children }) => {
   const location = useLocation()
-  const auth = sessionStorage.length
+  const auth = localStorage.length
 
   if (auth > 0) {
     return children

@@ -1,17 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { format } from 'date-fns'
 
 import { fetchArticle, fetchData, toFavoriteArticle, unfavoriteArticle } from '../../services/fetchData'
 import heart from '../../assets/heart.svg'
 import fullHeart from '../../assets/fullHeart.svg'
+import avatar from '../../assets/Rectangle 1.png'
 
 import styles from './article-preview.module.scss'
 
 const ArticlePreview = ({ article }) => {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const [isError, setIsError] = useState(false)
 
   const { author, slug, createdAt, description, favoritesCount, tagList, title, favorited } = article
   const { image, username } = author
@@ -30,12 +31,18 @@ const ArticlePreview = ({ article }) => {
 
   const favorites = favorited ? fullHeart : heart
 
-  const onLike = async () => {
-    if (sessionStorage.length == 0) navigate('/sign-in')
-    sessionStorage.length > 0 && !favorited
-      ? await dispatch(toFavoriteArticle(slug))
-      : await dispatch(unfavoriteArticle(slug))
-    await dispatch(fetchData())
+  const onLike = async (e) => {
+    e.preventDefault()
+
+    if (localStorage.length > 0 && !favorited) {
+      await dispatch(toFavoriteArticle(slug))
+      await dispatch(fetchData())
+    }
+
+    if (localStorage.length > 0 && favorited) {
+      await dispatch(unfavoriteArticle(slug))
+      await dispatch(fetchData())
+    }
   }
 
   return (
@@ -56,7 +63,12 @@ const ArticlePreview = ({ article }) => {
       <div className={styles.article__short_description}>{description}</div>
       <h6 className={styles.article__user_name}>{username}</h6>
       <p className={styles.article__date}>{formattedDate(createdAt)}</p>
-      <img src={image} alt="avatar" className={styles.article__avatar} />
+      <img
+        src={isError ? avatar : image}
+        alt="avatar"
+        className={styles.article__avatar}
+        onError={() => setIsError(true)}
+      />
     </div>
   )
 }

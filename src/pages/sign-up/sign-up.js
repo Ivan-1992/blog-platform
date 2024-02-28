@@ -4,19 +4,20 @@ import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { message } from 'antd'
 
+import { PATHS } from '../../components/app/app'
 import { registrationUser } from '../../services/fetchData'
-import ErrorIndicator from '../../components/error-indicator'
 
 import styles from './sign-up.module.scss'
 
 const SignUp = () => {
   const dispatch = useDispatch()
-  const error = useSelector((state) => state.register.error)
+  const registerError = useSelector((state) => state.register.error)
   const data = useSelector((state) => state.register.user)
   const navigate = useNavigate()
+
   useEffect(() => {
-    if (!error && data.length > 0) {
-      navigate('/articles')
+    if (!registerError && data.length > 0) {
+      navigate(PATHS.SIGN_IN)
       message.success('Registration successful!')
     }
   })
@@ -34,10 +35,6 @@ const SignUp = () => {
 
   const onSubmit = (data) => {
     dispatch(registrationUser(data))
-  }
-
-  if (error) {
-    return <ErrorIndicator error={error} />
   }
 
   return (
@@ -61,7 +58,10 @@ const SignUp = () => {
             })}
           />
         </label>
-        <div className={styles.signUp__error}>{errors?.username && <p>{errors?.username?.message || 'Error!'}</p>}</div>
+        <div className={styles.signUp__error}>
+          {errors?.username && <p>{errors?.username?.message || 'Error!'}</p>}
+          {registerError?.username && <p>{`Username ${registerError.username}`}</p>}
+        </div>
 
         <label className={styles.signUp__form_label}>
           Email address
@@ -77,11 +77,15 @@ const SignUp = () => {
             })}
           />
         </label>
-        <div className={styles.signUp__error}>{errors?.email && <p>{errors?.email?.message || 'Error!'}</p>}</div>
+        <div className={styles.signUp__error}>
+          {errors?.email && <p>{errors?.email?.message || 'Error!'}</p>}
+          {registerError?.email && <p>{`Email ${registerError.email}`}</p>}
+        </div>
 
         <label className={styles.signUp__form_label}>
           Password
           <input
+            type="password"
             placeholder="Password"
             className={styles.signUp__form_input}
             {...register('password', {
@@ -96,6 +100,7 @@ const SignUp = () => {
         <label className={styles.signUp__form_label}>
           Repeat Password
           <input
+            type="password"
             placeholder="Repeat Password"
             className={styles.signUp__form_input}
             {...register('repeatPassword', {
@@ -127,7 +132,7 @@ const SignUp = () => {
         </button>
         <div className={styles.signUp__form_footer}>
           Already have an account?
-          <Link to="/sign-in" className={styles.signUp__form_footer_link}>
+          <Link to={PATHS.SIGN_IN} className={styles.signUp__form_footer_link}>
             Sign In.
           </Link>
         </div>
